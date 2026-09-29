@@ -1,0 +1,71 @@
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import Footer from '@/components/Footer';
+import PublicNavbar from '@/components/PublicNavbar';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+
+export default function PublicLayout() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Inisialisasi Lenis smooth scrolling (Desktop & Mobile)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.2,
+      infinite: false,
+    });
+
+    let rafId;
+    function raf(time) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    // Smooth scroll saat klik navigasi anchor link (misal: #tentang, #edukasi, #panduan)
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a[href*="#"]');
+      if (anchor) {
+        const href = anchor.getAttribute('href');
+        const hashIndex = href.indexOf('#');
+        if (hashIndex !== -1) {
+          const hash = href.slice(hashIndex);
+          if (hash && hash !== '#') {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+              e.preventDefault();
+              lenis.scrollTo(targetElement, { offset: -90, duration: 1.2 });
+            }
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('click', handleAnchorClick);
+      lenis.destroy();
+    };
+  }, []);
+
+  // Reset scroll position ke atas saat pindah halaman
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return (
+    <div className="public-shell">
+      <PublicNavbar />
+      <main className="public-content"><Outlet /></main>
+      <Footer />
+    </div>
+  );
+}
