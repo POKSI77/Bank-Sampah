@@ -56,11 +56,44 @@ export default function WargaPage() {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let { name, value } = e.target;
+    
+    if (name === 'rt_rw') {
+      value = value.replace(/[^0-9/]/g, '');
+    }
+    
+    if (name === 'no_hp') {
+      value = value.replace(/[^0-9]/g, '');
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Custom validation
+    if (!formData.nama_kepala_keluarga || !formData.alamat_blok_rumah || !formData.rt_rw || !formData.no_hp) {
+      toast.remove('validation-error');
+      setTimeout(() => {
+        toast.error('Mohon lengkapi semua data formulir terlebih dahulu.', { id: 'validation-error' });
+      }, 50);
+      return;
+    }
+
+    // Validasi Nomor HP agar terlihat seperti nomor asli Indonesia
+    const noHp = formData.no_hp;
+    const isValidFormat = /^08[1-9][0-9]{7,11}$/.test(noHp); // Harus 08 diikuti 1-9, total 10-14 digit
+    const isFakeSequence = noHp === '081234567890' || /^08(\d)\1{7,}$/.test(noHp); // Tolak angka urut atau angka sama semua (misal 08111111111)
+
+    if (!isValidFormat || isFakeSequence) {
+      toast.remove('validation-error');
+      setTimeout(() => {
+        toast.error('Nomor HP tidak valid. Masukkan nomor yang benar (contoh: 0812xxxxxx).', { id: 'validation-error' });
+      }, 50);
+      return;
+    }
+
     setSubmitting(true);
     try {
       if (editingId) {
@@ -189,7 +222,6 @@ export default function WargaPage() {
                     name="nama_kepala_keluarga"
                     value={formData.nama_kepala_keluarga}
                     onChange={handleChange}
-                    required
                     disabled={submitting}
                     placeholder="Contoh: Bapak Supardi"
                   />
@@ -205,7 +237,6 @@ export default function WargaPage() {
                     name="alamat_blok_rumah"
                     value={formData.alamat_blok_rumah}
                     onChange={handleChange}
-                    required
                     disabled={submitting}
                     placeholder="Contoh: Blok B No. 5"
                   />
@@ -223,14 +254,13 @@ export default function WargaPage() {
                     name="rt_rw"
                     value={formData.rt_rw}
                     onChange={handleChange}
-                    required
                     disabled={submitting}
                     placeholder="Contoh: 02/04"
                   />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="no_hp">
-                    No. HP <span style={{ color: '#ef4444' }}>*</span>
+                    No. HP
                   </label>
                   <input
                     id="no_hp"
@@ -239,7 +269,6 @@ export default function WargaPage() {
                     name="no_hp"
                     value={formData.no_hp}
                     onChange={handleChange}
-                    required
                     disabled={submitting}
                     placeholder="Contoh: 081234567890"
                   />
