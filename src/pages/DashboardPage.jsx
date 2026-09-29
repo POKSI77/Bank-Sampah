@@ -12,7 +12,7 @@ import { getDashboardStats } from '@/services/api';
 import StatsCard from '@/components/StatsCard';
 import LoadingSkeleton from '@/components/LoadingSkeleton';
 import EmptyState from '@/components/EmptyState';
-import { 
+import {
   PieChart, Pie, Cell, Tooltip as RechartsTooltip, ResponsiveContainer, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts';
@@ -75,7 +75,7 @@ export default function DashboardPage() {
   const maxDataPemasukan = stats?.trenPemasukan ? Math.max(...stats.trenPemasukan.map(d => d.total)) : 0;
   // Memastikan grafik selalu memiliki garis vertikal yang cukup (minimal sampai 100k) agar tidak terlihat kosong
   const maxPemasukan = Math.max(maxDataPemasukan, 100000);
-  
+
   // Limit max ticks to 5 so it doesn't get crowded. Calculate appropriate step.
   let step = 25000;
   while (maxPemasukan / step > 6) {
@@ -154,7 +154,7 @@ export default function DashboardPage() {
 
       {/* Charts Section (Bar Chart & Pie Chart side by side) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 'var(--space-6)', marginBottom: 'var(--space-6)' }}>
-        
+
         {/* Bar Chart: Tren Pemasukan */}
         <div className="card">
           <div className="card-header">
@@ -166,9 +166,9 @@ export default function DashboardPage() {
                 <BarChart data={stats.trenPemasukan} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
                     tick={{ fontSize: 12, fill: '#64748b' }}
                     tickFormatter={(val) => `Rp${val / 1000}k`}
                     ticks={yTicks}
@@ -209,7 +209,7 @@ export default function DashboardPage() {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <RechartsTooltip 
+                  <RechartsTooltip
                     formatter={(value, name, props) => {
                       const nom = formatRupiah(props.payload.nominal || 0);
                       return [`${value} Transaksi (${nom})`, name];
@@ -230,7 +230,7 @@ export default function DashboardPage() {
 
       {/* Bottom Section: Transaksi Terakhir & Daftar Menunggak */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: 'var(--space-6)', alignItems: 'start' }}>
-        
+
         {/* Recent Transactions (Lebih panjang) */}
         <div className="card" style={{ gridColumn: 'span 2' }}>
           <div className="card-header">
@@ -295,8 +295,8 @@ export default function DashboardPage() {
             {stats?.wargaMenunggak?.length > 0 ? (
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {stats.wargaMenunggak.map((w, i) => (
-                  <li key={w.id_warga} style={{ 
-                    padding: '16px', 
+                  <li key={w.id_warga} style={{
+                    padding: '16px',
                     borderBottom: i === stats.wargaMenunggak.length - 1 ? 'none' : '1px solid #f1f5f9',
                     display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                   }}>
@@ -338,7 +338,7 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
-        
+
       </div>
     </>
   );
