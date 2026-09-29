@@ -15,18 +15,16 @@ import {
   HiOutlineTrophy,
   HiOutlineGlobeAlt,
   HiOutlineLightBulb,
-  HiOutlineMap,
   HiOutlineDocumentText,
   HiOutlineLifebuoy,
-  HiOutlineSparkles,
   HiOutlineSquares2X2,
   HiOutlineClock,
   HiOutlineBolt,
   HiOutlineShoppingBag,
+  HiOutlineArrowPath,
 } from 'react-icons/hi2';
 import { LuTreePine } from 'react-icons/lu';
 import logoMagetan from '../assets/logo_magetan.png';
-import hutanBg from '../assets/hutan.png';
 import card1Jenis from '../assets/card1_jenis.jpg';
 import card2Pilah from '../assets/card2_pilah.jpg';
 import card3Dampak from '../assets/card3_dampak.jpg';
@@ -35,16 +33,16 @@ import card5Kondisi from '../assets/card5_kondisi.jpg';
 
 /* ── Mini Game Data ── */
 const dataSampahAwal = [
-  { id: 1, nama: 'Kulit Pisang', kategori: 'Organik', emoji: '🍌' },
-  { id: 2, nama: 'Botol Plastik', kategori: 'Anorganik', emoji: '🍾' },
-  { id: 3, nama: 'Baterai Bekas', kategori: 'B3', emoji: '🔋' },
-  { id: 4, nama: 'Laptop Rusak', kategori: 'Elektronik', emoji: '💻' },
-  { id: 5, nama: 'Sisa Nasi', kategori: 'Organik', emoji: '🍚' },
-  { id: 6, nama: 'Kaleng Minuman', kategori: 'Anorganik', emoji: '🥫' },
-  { id: 7, nama: 'Cat Semprot', kategori: 'B3', emoji: '🎨' },
-  { id: 8, nama: 'Charger HP', kategori: 'Elektronik', emoji: '🔌' },
-  { id: 9, nama: 'Daun Kering', kategori: 'Organik', emoji: '🍂' },
-  { id: 10, nama: 'Kantong Plastik', kategori: 'Anorganik', emoji: '🛍️' },
+  { id: 1, nama: 'Kulit Pisang', kategori: 'Organik', image: '/icons/pisang.png' },
+  { id: 2, nama: 'Botol Plastik', kategori: 'Anorganik', image: '/icons/botol.png' },
+  { id: 3, nama: 'Baterai Bekas', kategori: 'B3', image: '/icons/baterai.png' },
+  { id: 4, nama: 'Laptop Rusak', kategori: 'Elektronik', image: '/icons/laptop.png' },
+  { id: 5, nama: 'Sisa Nasi', kategori: 'Organik', image: '/icons/nasi.png' },
+  { id: 6, nama: 'Kaleng Minuman', kategori: 'Anorganik', image: '/icons/kaleng.png' },
+  { id: 7, nama: 'Cat Semprot', kategori: 'B3', image: '/icons/cat.png' },
+  { id: 8, nama: 'Charger HP', kategori: 'Elektronik', image: '/icons/charger.png' },
+  { id: 9, nama: 'Daun Kering', kategori: 'Organik', image: '/icons/daun.png' },
+  { id: 10, nama: 'Kantong Plastik', kategori: 'Anorganik', image: '/icons/plastik.png' },
 ];
 
 const tongSampah = [
@@ -322,12 +320,7 @@ export default function LandingPage() {
   return (
     <>
     <div className="landing-page">
-      {/* ── Global Fixed Background (Revealing Background Parallax untuk Mobile & Desktop) ── */}
-      <div
-        className="fixed inset-0 w-full h-screen bg-[url('src/assets/hutan.jpg')] bg-cover bg-center -z-10 pointer-events-none global-fixed-bg"
-        style={{ backgroundImage: `url(${hutanBg})` }}
-        aria-hidden="true"
-      />
+      {/* Removed Parallax background temporarily for performance */}
 
       {/* ── Section Navbar & Hero (Beranda) ── */}
       <div className="w-full bg-[#a8d96b] relative z-10">
@@ -504,7 +497,7 @@ export default function LandingPage() {
                 <div className="minigame-trash-area">
                   <div className="minigame-header">
                     <div className="minigame-title-box">
-                      <h3 className="minigame-title">Area Sampah ☁️</h3>
+                      <h3 className="minigame-title">Area Sampah <img src="/icons/area-sampah.png" alt="" className="minigame-title-icon-img" /></h3>
                     </div>
                     <div className="minigame-stats">
                       <span className="minigame-pill pill-skor">
@@ -529,7 +522,7 @@ export default function LandingPage() {
                         style={{ alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end', marginTop: index % 3 === 0 ? '40px' : '0' }}
                       >
                         <span className="minigame-trash-emoji">
-                          {item.emoji}
+                          <img src={item.image} alt={item.nama} className="minigame-trash-img" />
                           {sampahAktif?.id === item.id && <span className="minigame-check-badge">✓</span>}
                         </span>
                       </button>
@@ -566,15 +559,15 @@ export default function LandingPage() {
             ) : (
               /* Layar Sukses */
               <div className="minigame-success">
-                <span className="minigame-success-icon">✅</span>
+                <span className="minigame-success-icon"><HiOutlineCheckCircle /></span>
                 <h3>Selamat, Kamu Berhasil!</h3>
                 <p>Semua sampah sudah terpilah dengan benar.</p>
                 <div className="minigame-success-stat">
                   <span>Skor: {skor}/{percobaan}</span>
                   <span className="minigame-pill pill-akurasi">Akurasi: {akurasi}%</span>
                 </div>
-                <button className="btn btn-hero-primary minigame-reset-btn" onClick={resetGame}>
-                  🔄 Main Lagi
+                <button className="btn btn-hero-primary minigame-reset-btn" onClick={resetGame} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <HiOutlineArrowPath /> Main Lagi
                 </button>
               </div>
             )}
