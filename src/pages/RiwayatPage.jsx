@@ -92,35 +92,26 @@ export default function RiwayatPage() {
       </header>
 
       {/* Filters */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 'var(--space-3)',
-          marginBottom: 'var(--space-6)',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-        }}
-      >
-        <div className="search-box" style={{ flex: '1 1 250px' }}>
+      <div className="admin-actions-bar">
+        <div className="search-box">
           <span className="search-box-icon">
             <HiOutlineMagnifyingGlass />
           </span>
           <input
             type="text"
             className="form-input"
-            placeholder="Cari nama warga..."
+            placeholder="Cari nama warga, alamat, atau bulan..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          <HiOutlineFunnel style={{ color: 'var(--text-tertiary)' }} />
+        <div className="admin-filter-group">
+          <HiOutlineFunnel style={{ color: 'var(--text-tertiary)', flexShrink: 0 }} />
           <select
-            className="form-select"
+            className="form-select admin-filter-select"
             value={filterBulan}
             onChange={(e) => setFilterBulan(e.target.value)}
-            style={{ width: 'auto', minWidth: '180px' }}
           >
             <option value="">Semua Bulan</option>
             {bulanOptions.map((bulan) => (
@@ -134,7 +125,7 @@ export default function RiwayatPage() {
 
       {/* Table */}
       <div className="card">
-        <div className="card-header">
+        <div className="card-header card-header-responsive">
           <h2 className="card-header-title">
             Daftar Transaksi{' '}
             <span
@@ -146,6 +137,7 @@ export default function RiwayatPage() {
           </h2>
           {filtered.length > 0 && (
             <span
+              className="card-header-extra"
               style={{
                 fontSize: 'var(--font-size-sm)',
                 fontWeight: 'var(--font-weight-semibold)',
@@ -158,40 +150,45 @@ export default function RiwayatPage() {
         </div>
 
         {filtered.length > 0 ? (
-          <div className="table-wrapper">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Nama Kepala Keluarga</th>
-                  <th>Alamat</th>
-                  <th>Bulan</th>
-                  <th>Nominal</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((trx, index) => {
-                  const warga = wargaMap[trx.id_warga];
-                  return (
-                    <tr key={trx.id_transaksi || index}>
-                      <td>{index + 1}</td>
-                      <td style={{ fontWeight: 500 }}>
-                        {trx.nama_kepala_keluarga || warga?.nama_kepala_keluarga || `Warga #${trx.id_warga}`}
-                      </td>
-                      <td>{warga?.alamat_blok_rumah || '—'}</td>
-                      <td>{trx.bulan_tagihan || trx.bulan}</td>
-                      <td className="currency">{formatRupiah(trx.nominal || 0)}</td>
-                      <td>
-                        <span className={`badge ${trx.status_pembayaran === 'Belum Lunas' ? 'badge-error' : 'badge-success'}`} style={trx.status_pembayaran === 'Belum Lunas' ? { background: '#fee2e2', color: '#b91c1c' } : {}}>
-                          {trx.status_pembayaran || 'Lunas'}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="table-responsive-container">
+            <div className="table-scroll-hint">
+              <span>&larr; Geser tabel ke samping untuk melihat kolom lengkap &rarr;</span>
+            </div>
+            <div className="table-wrapper">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Nama Kepala Keluarga</th>
+                    <th>Alamat</th>
+                    <th>Bulan</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((trx, index) => {
+                    const warga = wargaMap[trx.id_warga];
+                    return (
+                      <tr key={trx.id_transaksi || index}>
+                        <td>{index + 1}</td>
+                        <td style={{ fontWeight: 500 }}>
+                          {trx.nama_kepala_keluarga || warga?.nama_kepala_keluarga || `Warga #${trx.id_warga}`}
+                        </td>
+                        <td>{warga?.alamat_blok_rumah || '—'}</td>
+                        <td>{trx.bulan_tagihan || trx.bulan}</td>
+                        <td className="currency">{formatRupiah(trx.nominal || 0)}</td>
+                        <td>
+                          <span className={`badge ${trx.status_pembayaran === 'Belum Lunas' ? 'badge-error' : 'badge-success'}`} style={trx.status_pembayaran === 'Belum Lunas' ? { background: '#fee2e2', color: '#b91c1c' } : {}}>
+                            {trx.status_pembayaran || 'Lunas'}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         ) : transaksiList.length === 0 ? (
           <EmptyState

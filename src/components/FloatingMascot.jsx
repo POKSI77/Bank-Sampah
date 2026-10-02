@@ -44,14 +44,9 @@ const FloatingMascot = () => {
   const [isWiggling, setIsWiggling] = useState(false);
   const hideTimerRef = useRef(null);
 
-  // Munculin otomatis saat awal render (opsional)
+  // Bersihkan timer saat komponen unmount
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowBubble(true);
-      hideTimerRef.current = setTimeout(() => setShowBubble(false), 6000);
-    }, 2000);
     return () => {
-      clearTimeout(timer);
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     };
   }, []);
@@ -90,7 +85,9 @@ const FloatingMascot = () => {
       {/* Speech Bubble */}
       <div 
         className={`mascot-bubble ${showBubble ? 'show' : ''}`}
-        style={{ background: currentColor }}
+        style={{ background: currentColor, pointerEvents: showBubble ? 'auto' : 'none', cursor: 'pointer' }}
+        onClick={() => setShowBubble(false)}
+        title="Klik untuk menutup"
       >
         {currentFact}
       </div>

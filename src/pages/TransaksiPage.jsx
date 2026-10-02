@@ -127,7 +127,7 @@ export default function TransaksiPage() {
       </header>
 
       {success && (
-        <div className="alert alert-success" style={{ marginBottom: 'var(--space-6)', maxWidth: '640px' }}>
+        <div className="alert alert-success admin-form-alert">
           <HiOutlineCheckCircle style={{ fontSize: '1.3rem', flexShrink: 0 }} />
           <div>
             <strong>Berhasil!</strong> Data iuran telah tersimpan.{' '}
@@ -138,7 +138,7 @@ export default function TransaksiPage() {
         </div>
       )}
 
-      <div className="card" style={{ maxWidth: '640px' }}>
+      <div className="card admin-form-card">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -173,23 +173,15 @@ export default function TransaksiPage() {
               </label>
               
               {formData.id_warga && unpaidMonths.length > 0 && (
-                <div style={{ marginBottom: '16px', background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                <div className="unpaid-months-container">
                   <p style={{ margin: '0 0 12px 0', fontSize: '0.9rem', fontWeight: 600, color: '#334155' }}>
                     Tunggakan Belum Lunas:
                   </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '8px' }}>
+                  <div className="unpaid-months-grid">
                     {unpaidMonths.map(bill => {
                       const isChecked = formData.selected_months.includes(bill.bulan_tagihan_raw);
                       return (
-                        <label key={bill.bulan_tagihan_raw} style={{ 
-                          display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer',
-                          padding: '10px 12px', 
-                          background: isChecked ? '#ecfdf5' : '#fff',
-                          border: isChecked ? '1px solid #10b981' : '1px solid #cbd5e1',
-                          borderRadius: '8px', transition: 'all 0.2s ease',
-                          color: isChecked ? '#065f46' : '#475569',
-                          fontWeight: isChecked ? '600' : '400'
-                        }}>
+                        <label key={bill.bulan_tagihan_raw} className={`unpaid-month-item ${isChecked ? 'checked' : ''}`}>
                           <input
                             type="checkbox"
                             checked={isChecked}

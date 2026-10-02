@@ -34,9 +34,16 @@ export default function Footer() {
         
         <div className="footer-column footer-contact">
           <h3>Hubungi Kami</h3>
-          <p><HiOutlineMapPin /> Jl. Raya Parang No.16, Ngariboyo, Magetan</p>
-          <a href="https://wa.me/6281259741038" target="_blank" rel="noreferrer"><HiOutlinePhone /> +62 812-5974-1038</a>
-          <a href="mailto:balai@ngariboyo.desa.id"><HiOutlineEnvelope /> balai@ngariboyo.desa.id</a>
+          <a 
+            href="https://maps.app.goo.gl/fPVc5xx176X49dJH7" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            title="Buka lokasi di Google Maps"
+          >
+            <HiOutlineMapPin /> Jl. Raya Parang No.16, Ngariboyo, Magetan
+          </a>
+          <a href="https://wa.me/6281259741038" target="_blank" rel="noopener noreferrer"><HiOutlinePhone /> +62 812-5974-1038</a>
+          <a href="mailto:pemdesngariboyo@gmail.com"><HiOutlineEnvelope /> pemdesngariboyo@gmail.com</a>
         </div>
       </div>
       

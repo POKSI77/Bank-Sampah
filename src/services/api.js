@@ -203,13 +203,30 @@ export async function getDashboardStats() {
     const monthRaw = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     const monthLabel = d.toLocaleString('id-ID', { month: 'short' });
     
-    const total = transaksiList
-      .filter(trx => trx.bulan_tagihan_raw === monthRaw)
+    const monthlyTrx = transaksiList.filter(trx => trx.bulan_tagihan_raw === monthRaw);
+    const total = monthlyTrx.reduce((sum, trx) => sum + (Number(trx.nominal) || 0), 0);
+
+    const tunai = monthlyTrx
+      .filter(trx => {
+        const m = (trx.metode_bayar || 'Tunai').toLowerCase();
+        return m.includes('tunai') || m.includes('cash');
+      })
       .reduce((sum, trx) => sum + (Number(trx.nominal) || 0), 0);
-      
+
+    const transfer = monthlyTrx
+      .filter(trx => {
+        const m = (trx.metode_bayar || '').toLowerCase();
+        return m.includes('transfer');
+      })
+      .reduce((sum, trx) => sum + (Number(trx.nominal) || 0), 0);
+
     trenPemasukan.push({
       name: monthLabel,
-      total: total
+      total,
+      Tunai: tunai,
+      Transfer: transfer,
+      tunai,
+      transfer,
     });
   }
 

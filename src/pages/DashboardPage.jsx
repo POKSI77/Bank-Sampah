@@ -56,15 +56,37 @@ export default function DashboardPage() {
     return <LoadingSkeleton variant="page" />;
   }
 
-  // Format data untuk Bar Chart agar Rupiahnya lebih mudah dibaca di Tooltip
+  // Format data untuk Bar Chart agar Rupiahnya lebih mudah dibaca di Tooltip dengan detail Cash / Transfer
   const CustomBarTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      const data = payload[0]?.payload || {};
+      const tunaiNominal = data.Tunai ?? data.tunai ?? 0;
+      const transferNominal = data.Transfer ?? data.transfer ?? 0;
+      const totalNominal = data.total ?? (tunaiNominal + transferNominal);
+
       return (
-        <div style={{ background: '#fff', padding: '12px', border: '1px solid #e2e8f0', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-          <p style={{ margin: '0 0 8px 0', fontWeight: 600, color: '#334155' }}>{label}</p>
-          <p style={{ margin: 0, color: '#10b981', fontWeight: 700 }}>
-            {formatRupiah(payload[0].value)}
-          </p>
+        <div style={{ background: '#ffffff', padding: '12px 16px', border: '1px solid #e2e8f0', borderRadius: '10px', boxShadow: '0 8px 16px rgba(0,0,0,0.08)' }}>
+          <p style={{ margin: '0 0 8px 0', fontWeight: 700, color: '#1e293b', fontSize: '0.9rem' }}>{label}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+              <span style={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                Tunai (Cash):
+              </span>
+              <span style={{ fontWeight: 700, color: '#334155' }}>{formatRupiah(tunaiNominal)}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+              <span style={{ color: '#3b82f6', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6', display: 'inline-block' }}></span>
+                Transfer:
+              </span>
+              <span style={{ fontWeight: 700, color: '#334155' }}>{formatRupiah(transferNominal)}</span>
+            </div>
+            <div style={{ borderTop: '1px solid #f1f5f9', marginTop: '4px', paddingTop: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+              <span style={{ color: '#64748b', fontWeight: 600 }}>Total:</span>
+              <span style={{ fontWeight: 800, color: '#0f172a' }}>{formatRupiah(totalNominal)}</span>
+            </div>
+          </div>
         </div>
       );
     }
@@ -93,7 +115,7 @@ export default function DashboardPage() {
         <p className="page-header-eyebrow">Desa Ngariboyo</p>
         <h1 className="page-header-title">Dashboard</h1>
         <p className="page-header-subtitle">
-          Ringkasan data iuran sampah warga ?" {stats?.bulanSekarang || ''}
+          Ringkasan data iuran sampah warga — {stats?.bulanSekarang || ''}
         </p>
       </header>
 
@@ -153,7 +175,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts Section (Bar Chart & Pie Chart side by side) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 'var(--space-6)', marginBottom: 'var(--space-6)' }}>
+      <div className="dashboard-grid-charts">
 
         {/* Bar Chart: Tren Pemasukan */}
         <div className="card">
@@ -163,7 +185,7 @@ export default function DashboardPage() {
           <div className="card-body" style={{ height: '320px', padding: '0 var(--space-4) var(--space-4)' }}>
             {stats?.trenPemasukan?.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.trenPemasukan} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <BarChart data={stats.trenPemasukan} margin={{ top: 20, right: 15, left: -10, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} dy={10} />
                   <YAxis
@@ -175,7 +197,9 @@ export default function DashboardPage() {
                     domain={[0, yTicks[yTicks.length - 1] || 'dataMax']}
                   />
                   <RechartsTooltip content={<CustomBarTooltip />} cursor={{ fill: '#f1f5f9' }} />
-                  <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} barSize={40} />
+                  <Legend verticalAlign="top" align="right" height={36} iconType="circle" />
+                  <Bar dataKey="Tunai" name="Tunai (Cash)" stackId="a" fill="#10b981" barSize={36} />
+                  <Bar dataKey="Transfer" name="Transfer" stackId="a" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={36} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -199,8 +223,8 @@ export default function DashboardPage() {
                     cy="50%"
                     labelLine={false}
                     label={renderCustomizedLabel}
-                    innerRadius={70}
-                    outerRadius={110}
+                    innerRadius={60}
+                    outerRadius={95}
                     paddingAngle={5}
                     dataKey="value"
                     stroke="none"
@@ -228,63 +252,62 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Bottom Section: Transaksi Terakhir & Daftar Menunggak */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: 'var(--space-6)', alignItems: 'start' }}>
-
-        {/* Recent Transactions (Lebih panjang) */}
-        <div className="card" style={{ gridColumn: 'span 2' }}>
-          <div className="card-header">
-            <h2 className="card-header-title">Transaksi Terakhir</h2>
-            <Link to="/admin/riwayat" className="btn btn-secondary" style={{ fontSize: 'var(--font-size-xs)' }}>
-              Lihat Semua <HiOutlineArrowRight />
-            </Link>
-          </div>
-
-          {stats?.transaksiTerbaru?.length > 0 ? (
-            <div className="table-wrapper">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Nama Warga</th>
-                    <th>Bulan</th>
-                    <th>Nominal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.transaksiTerbaru.map((trx, index) => {
-                    const warga = stats.wargaList?.find(
-                      (w) => w.id_warga === trx.id_warga
-                    );
-                    return (
-                      <tr key={trx.id_transaksi || index}>
-                        <td style={{ fontWeight: 500 }}>
-                          {trx.nama_kepala_keluarga || warga?.nama_kepala_keluarga || (trx.id_warga ? `Warga #${trx.id_warga}` : 'Warga')}
-                        </td>
-                        <td>{trx.bulan}</td>
-                        <td className="currency">
-                          {formatRupiah(trx.nominal || 0)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <EmptyState
-              icon={<HiOutlineBanknotes />}
-              title="Belum ada transaksi"
-              description="Data transaksi akan muncul setelah Anda mencatat pembayaran iuran warga."
-            >
-              <Link to="/admin/transaksi" className="btn btn-primary">
-                <HiOutlinePlusCircle /> Catat Transaksi Pertama
-              </Link>
-            </EmptyState>
-          )}
+      {/* Transaksi Terakhir (Full Width, Compact & Sleek) */}
+      <div className="card dashboard-card-transactions">
+        <div className="card-header">
+          <h2 className="card-header-title">Transaksi Terakhir</h2>
+          <Link to="/admin/riwayat" className="btn btn-secondary" style={{ fontSize: 'var(--font-size-xs)' }}>
+            Lihat Semua <HiOutlineArrowRight />
+          </Link>
         </div>
 
+        {stats?.transaksiTerbaru?.length > 0 ? (
+          <div className="table-wrapper">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Nama Warga</th>
+                  <th>Bulan</th>
+                  <th>Nominal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.transaksiTerbaru.map((trx, index) => {
+                  const warga = stats.wargaList?.find(
+                    (w) => w.id_warga === trx.id_warga
+                  );
+                  return (
+                    <tr key={trx.id_transaksi || index}>
+                      <td style={{ fontWeight: 500 }}>
+                        {trx.nama_kepala_keluarga || warga?.nama_kepala_keluarga || (trx.id_warga ? `Warga #${trx.id_warga}` : 'Warga')}
+                      </td>
+                      <td>{trx.bulan}</td>
+                      <td className="currency">
+                        {formatRupiah(trx.nominal || 0)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <EmptyState
+            icon={<HiOutlineBanknotes />}
+            title="Belum ada transaksi"
+            description="Data transaksi akan muncul setelah Anda mencatat pembayaran iuran warga."
+          >
+            <Link to="/admin/transaksi" className="btn btn-primary">
+              <HiOutlinePlusCircle /> Catat Transaksi Pertama
+            </Link>
+          </EmptyState>
+        )}
+      </div>
+
+      {/* Grid Bawah: Prioritas Tagihan & Potensi Piutang (Side-by-Side 50%/50%) */}
+      <div className="dashboard-grid-dual">
         {/* Prioritas Tagihan */}
-        <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div className="card dashboard-card-prioritas">
           <div className="card-header">
             <h2 className="card-header-title" style={{ color: '#ef4444' }}>
               <HiOutlineExclamationTriangle style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '4px' }} />
@@ -312,7 +335,7 @@ export default function DashboardPage() {
               </ul>
             ) : (
               <div style={{ padding: '32px 16px', textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <p style={{ color: '#10b981', fontWeight: 600, margin: '0 0 8px 0' }}>Bagus Sekali!</p>
+                <p style={{ color: '#10b981', fontWeight: 600, margin: '0 0 8px 0', fontSize: '1rem' }}>Bagus Sekali!</p>
                 <p style={{ color: '#64748b', fontSize: '0.85rem', margin: 0 }}>Semua warga bulan ini sudah melunasi tagihannya.</p>
               </div>
             )}
@@ -320,7 +343,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Potensi Piutang */}
-        <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div className="card dashboard-card-piutang">
           <div className="card-header">
             <h2 className="card-header-title" style={{ color: '#0ea5e9' }}>
               <HiOutlineBanknotes style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '4px' }} />
@@ -338,7 +361,6 @@ export default function DashboardPage() {
             </Link>
           </div>
         </div>
-
       </div>
     </>
   );

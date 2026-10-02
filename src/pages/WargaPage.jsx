@@ -162,16 +162,8 @@ export default function WargaPage() {
       </header>
 
       {/* Actions Bar */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 'var(--space-3)',
-          marginBottom: 'var(--space-6)',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-        }}
-      >
-        <div className="search-box" style={{ flex: '1 1 250px' }}>
+      <div className="admin-actions-bar">
+        <div className="search-box">
           <span className="search-box-icon">
             <HiOutlineMagnifyingGlass />
           </span>
@@ -184,7 +176,7 @@ export default function WargaPage() {
           />
         </div>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary admin-action-btn"
           onClick={() => {
             setShowForm(!showForm);
             setEditingId(null);
@@ -301,7 +293,11 @@ export default function WargaPage() {
         </div>
 
         {filtered.length > 0 ? (
-          <div className="table-wrapper">
+          <div className="table-responsive-container">
+            <div className="table-scroll-hint">
+              <span>&larr; Geser tabel ke samping untuk melihat kolom lengkap &rarr;</span>
+            </div>
+            <div className="table-wrapper">
             <table className="table">
               <thead>
                 <tr>
@@ -334,6 +330,7 @@ export default function WargaPage() {
               </tbody>
             </table>
           </div>
+        </div>
         ) : search ? (
           <EmptyState
             icon={<HiOutlineMagnifyingGlass />}

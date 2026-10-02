@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation, Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import {
@@ -24,6 +24,10 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   const closeSidebar = () => setSidebarOpen(false);
 
@@ -61,7 +65,16 @@ export default function Layout() {
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-brand">
-          <img className="sidebar-brand-icon" src={logoMagetan} alt="Logo resmi Magetan" />
+          <div className="sidebar-brand-top">
+            <img className="sidebar-brand-icon" src={logoMagetan} alt="Logo resmi Magetan" />
+            <button
+              className="sidebar-close-btn"
+              onClick={closeSidebar}
+              aria-label="Tutup menu sidebar"
+            >
+              <HiOutlineXMark />
+            </button>
+          </div>
           <Link to="/admin" className="sidebar-brand-title" onClick={closeSidebar}>Desa Ngariboyo</Link>
           <div className="sidebar-brand-subtitle">Sistem Iuran Sampah</div>
         </div>

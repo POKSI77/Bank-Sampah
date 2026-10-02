@@ -879,6 +879,8 @@ img {
 .app-layout {
   display: flex;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: clip;
 }
 
 /* --- Sidebar --- */
@@ -902,12 +904,37 @@ img {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.sidebar-brand-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.sidebar-close-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  font-size: 1.25rem;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.sidebar-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .sidebar-brand-icon {
   width: 45px;
   height: 45px;
   object-fit: contain;
   border-radius: var(--radius-md);
-  margin-bottom: var(--space-3);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
@@ -986,6 +1013,9 @@ img {
   flex: 1;
   margin-left: var(--sidebar-width);
   min-height: 100vh;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .page-container {
@@ -1269,13 +1299,37 @@ img {
 }
 
 /* --- Tables --- */
+.table-responsive-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+.table-scroll-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-primary-700);
+  background: var(--color-primary-50);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  letter-spacing: 0.01em;
+}
+
 .table-wrapper {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-radius: var(--radius-lg);
+  width: 100%;
 }
 
 .table {
   width: 100%;
+  min-width: 580px;
   border-collapse: collapse;
   font-size: var(--font-size-sm);
 }
@@ -3338,39 +3392,75 @@ body,
 }
 
 .minigame-trash-items {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 16px;
-  padding: 30px 20px;
+  position: relative;
+  width: 100%;
+  min-height: 280px;
   flex: 1;
+  margin: 10px 0;
 }
 
 /* Trash Item */
 .minigame-trash-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
   outline: none;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.minigame-trash-item:nth-child(even) {
-  transform: translateY(15px);
-}
+/* Posisi berpencar di Desktop - menyebar penuh ke seluruh area tanpa ruang kosong di pinggir */
+.pos-item-1 { top: 22%; left: 7%; }
+.pos-item-1 .minigame-trash-emoji { transform: rotate(-7deg); }
+
+.pos-item-2 { top: 72%; left: 14%; }
+.pos-item-2 .minigame-trash-emoji { transform: rotate(9deg); }
+
+.pos-item-3 { top: 36%; left: 24%; }
+.pos-item-3 .minigame-trash-emoji { transform: rotate(-5deg); }
+
+.pos-item-4 { top: 78%; left: 34%; }
+.pos-item-4 .minigame-trash-emoji { transform: rotate(8deg); }
+
+.pos-item-5 { top: 18%; left: 45%; }
+.pos-item-5 .minigame-trash-emoji { transform: rotate(-6deg); }
+
+.pos-item-6 { top: 65%; left: 55%; }
+.pos-item-6 .minigame-trash-emoji { transform: rotate(7deg); }
+
+.pos-item-7 { top: 26%; left: 65%; }
+.pos-item-7 .minigame-trash-emoji { transform: rotate(-8deg); }
+
+.pos-item-8 { top: 75%; left: 75%; }
+.pos-item-8 .minigame-trash-emoji { transform: rotate(6deg); }
+
+.pos-item-9 { top: 30%; left: 85%; }
+.pos-item-9 .minigame-trash-emoji { transform: rotate(-6deg); }
+
+.pos-item-10 { top: 68%; left: 93%; }
+.pos-item-10 .minigame-trash-emoji { transform: rotate(9deg); }
 
 .minigame-trash-item:hover {
-  transform: scale(1.1);
+  transform: translate(-50%, -50%) scale(1.18);
+  z-index: 10;
 }
 
-.minigame-trash-item:nth-child(even):hover {
-  transform: translateY(15px) scale(1.1);
+.minigame-trash-item:hover .minigame-trash-emoji {
+  transform: rotate(0deg);
+}
+
+.minigame-trash-item.active {
+  transform: translate(-50%, -50%) scale(1.22);
+  z-index: 12;
+}
+
+.minigame-trash-item.active .minigame-trash-emoji {
+  transform: rotate(0deg);
 }
 
 .minigame-trash-emoji {
@@ -3413,20 +3503,7 @@ body,
 }
 
 .minigame-trash-label {
-  color: #475569;
-  font-size: 0.68rem;
-  font-weight: 600;
-  max-width: 70px;
-  text-align: center;
-  line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.minigame-trash-item.active .minigame-trash-label {
-  color: #b45309;
-  font-weight: 700;
+  display: none !important;
 }
 
 /* ── Bin Area ── */
@@ -3744,43 +3821,161 @@ body,
 /* ── Mini Game Responsive ── */
 @media (max-width: 768px) {
   .minigame-container {
-    margin-top: 40px;
-    padding: 22px 16px;
+    margin-top: 36px;
+    padding: 20px 12px;
+    border-radius: 20px;
+  }
+
+  .minigame-trash-area {
+    padding: 16px 10px;
+    min-height: auto;
     border-radius: 18px;
   }
 
   .minigame-header {
     flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    gap: 10px;
   }
 
+  .minigame-title-box {
+    padding: 5px 14px;
+  }
+
+  .minigame-title {
+    font-size: 0.95rem;
+    gap: 6px;
+  }
+
+  .minigame-title-icon-img {
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+  }
+
+  /* Skor, Akurasi, Sisa agak diperkecil di mobile */
   .minigame-stats {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
   }
 
+  .minigame-pill {
+    padding: 3px 8px;
+    font-size: 0.68rem;
+    gap: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .minigame-stat-icon {
+    font-size: 0.78rem;
+  }
+
+  /* Area sampah di mobile menyebar penuh ke seluruh penjuru */
   .minigame-trash-items {
-    padding: 10px;
-    gap: 12px;
+    position: relative;
+    width: 100%;
+    min-height: 310px;
+    margin: 10px 0;
   }
 
   .minigame-trash-emoji {
-    width: 62px;
-    height: 62px;
-    font-size: 1.6rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
+  }
+
+  .minigame-trash-img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .minigame-trash-label {
+    display: none !important;
+  }
+
+  .minigame-check-badge {
+    width: 18px;
+    height: 18px;
+    font-size: 0.65rem;
+    top: -3px;
+    right: -3px;
+  }
+
+  /* Posisi berpencar di Mobile - 4 tier menyebar ke seluruh tepi dan sudut */
+  .pos-item-1 { top: 14%; left: 14%; }
+  .pos-item-2 { top: 11%; left: 50%; }
+  .pos-item-3 { top: 15%; left: 86%; }
+  .pos-item-4 { top: 38%; left: 24%; }
+  .pos-item-5 { top: 40%; left: 76%; }
+  .pos-item-6 { top: 64%; left: 14%; }
+  .pos-item-7 { top: 61%; left: 50%; }
+  .pos-item-8 { top: 65%; left: 86%; }
+  .pos-item-9 { top: 88%; left: 26%; }
+  .pos-item-10 { top: 87%; left: 74%; }
+
+  .minigame-trash-item:hover {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  .minigame-trash-item.active {
+    transform: translate(-50%, -50%) scale(1.15);
   }
 
   .minigame-bins {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin-top: 14px;
   }
 
   .minigame-bin {
-    padding: 18px 10px;
+    padding: 14px 8px 12px;
+    border-radius: 14px;
+  }
+
+  .minigame-bin-icon-wrapper {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+
+  .minigame-bin-label {
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+  }
+
+  .minigame-bin-action {
+    padding: 4px 12px;
+    font-size: 0.72rem;
   }
 
   .minigame-success {
-    padding: 38px 20px;
+    padding: 32px 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .minigame-trash-emoji {
+    width: 42px;
+    height: 42px;
+  }
+
+  .minigame-trash-img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .minigame-trash-items {
+    gap: 8px;
+  }
+
+  .minigame-pill {
+    padding: 3px 8px;
+    font-size: 0.68rem;
   }
 }
 
@@ -4669,23 +4864,31 @@ body,
 }
  
 
-/* --- Dashboard Responsive Grids --- */
+/* --- Dashboard & Admin Responsive Grids --- */
 .dashboard-grid-charts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
   gap: var(--space-6);
   margin-bottom: var(--space-6);
 }
 
-.dashboard-grid-bottom {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
-  gap: var(--space-6);
-  align-items: start;
+.dashboard-card-transactions {
+  width: 100%;
+  margin-bottom: var(--space-6);
 }
 
-.card-span-2 {
-  grid-column: span 2;
+.dashboard-grid-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: stretch;
+}
+
+.dashboard-card-prioritas,
+.dashboard-card-piutang {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .smart-bin-grid {
@@ -4694,12 +4897,248 @@ body,
   gap: 24px;
 }
 
-@media (max-width: 900px) {
-  .card-span-2 {
-    grid-column: span 1;
+/* --- Admin Actions & Filter Bar --- */
+.admin-actions-bar {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.admin-actions-bar .search-box {
+  flex: 1 1 250px;
+}
+
+.admin-filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-filter-select {
+  width: auto;
+  min-width: 180px;
+}
+
+.card-header-responsive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* --- Admin Form Responsive --- */
+.admin-form-card {
+  max-width: 640px;
+  width: 100%;
+}
+
+.admin-form-alert {
+  max-width: 640px;
+  width: 100%;
+  margin-bottom: var(--space-6);
+}
+
+.unpaid-months-container {
+  margin-bottom: 16px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.unpaid-months-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.unpaid-month-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.unpaid-month-item.checked {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+  font-weight: 600;
+}
+
+/* --- Responsive Breakpoints for Admin Panel --- */
+@media (max-width: 1024px) {
+  .dashboard-grid-charts {
+    grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 900px) {
   .smart-bin-grid {
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 768px) {
+  .dashboard-grid-dual {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+  }
+  .table-scroll-hint {
+    display: flex;
+  }
+  .page-container {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+
+  .admin-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .admin-actions-bar .search-box {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .admin-actions-bar .admin-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-filter-group {
+    width: 100%;
+  }
+
+  .admin-filter-select {
+    width: 100%;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-header-responsive {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .card-header-responsive .card-header-extra {
+    align-self: flex-start;
+  }
+
+  .unpaid-months-container {
+    padding: 12px;
+  }
+
+  .unpaid-months-grid {
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 6px;
+  }
+
+  .unpaid-month-item {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .quick-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 22px 18px; /* Memberikan jarak nyaman 18px dari tepi layar */
+  }
+
+  .page-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .page-header-title {
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+  }
+
+  .page-header-subtitle {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .stats-grid {
+    gap: 14px;
+    margin-bottom: var(--space-6);
+  }
+
+  .stat-card {
+    padding: 18px 16px;
+    gap: 14px;
+    border-radius: var(--radius-lg);
+  }
+
+  .stat-card-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.35rem;
+  }
+
+  .stat-card-value {
+    font-size: 1.45rem;
+  }
+
+  .quick-actions {
+    gap: 10px;
+    margin-bottom: var(--space-6);
+  }
+
+  .quick-actions .btn {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-radius: var(--radius-md);
+  }
+
+  .card {
+    border-radius: var(--radius-lg);
+  }
+
+  .card-header {
+    padding: 16px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 12px;
+    font-size: 0.8rem;
+  }
+}
+
 

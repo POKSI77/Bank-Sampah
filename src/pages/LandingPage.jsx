@@ -514,13 +514,12 @@ export default function LandingPage() {
                   </div>
 
                   <div className="minigame-trash-items">
-                    {sisaSampah.map((item, index) => (
+                    {sisaSampah.map((item) => (
                       <button
                         key={item.id}
-                        className={`minigame-trash-item${sampahAktif?.id === item.id ? ' active' : ''}`}
+                        className={`minigame-trash-item pos-item-${item.id}${sampahAktif?.id === item.id ? ' active' : ''}`}
                         onClick={() => pilihSampah(item)}
                         title={item.nama}
-                        style={{ alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end', marginTop: index % 3 === 0 ? '40px' : '0' }}
                       >
                         <span className="minigame-trash-emoji">
                           <img src={item.image} alt={item.nama} className="minigame-trash-img" />
