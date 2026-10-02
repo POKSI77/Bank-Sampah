@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Layout from '@/components/Layout';
 import PublicLayout from '@/components/PublicLayout';
@@ -21,6 +21,9 @@ export default function App() {
         <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/tentang" element={<LandingPage />} />
+            <Route path="/edukasi" element={<LandingPage />} />
+            <Route path="/panduan" element={<LandingPage />} />
             <Route path="/cek-iuran" element={<CekIuranPage />} />
             <Route path="/jemput" element={<JemputSampahPage />} />
           </Route>
@@ -34,6 +37,9 @@ export default function App() {
               <Route path="riwayat" element={<RiwayatPage />} />
             </Route>
           </Route>
+
+          {/* Wildcard fallback agar URL tidak valid tidak menyebabkan layar putih */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         {/* Toast Notifications */}

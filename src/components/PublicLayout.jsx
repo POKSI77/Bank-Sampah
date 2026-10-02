@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import PublicNavbar from '@/components/PublicNavbar';
@@ -64,9 +64,17 @@ export default function PublicLayout() {
     };
   }, []);
 
-  // Reset scroll position ke atas saat pindah halaman
+  // Reset scroll position ke atas saat pindah ke halaman lain (selain seksi landing page)
+  const prevPathRef = useRef(location.pathname);
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const landingPaths = ['/', '/tentang', '/edukasi', '/panduan'];
+    const wasLanding = landingPaths.includes(prevPathRef.current);
+    const isLanding = landingPaths.includes(location.pathname);
+
+    if (!isLanding || (!wasLanding && isLanding && location.pathname === '/')) {
+      window.scrollTo(0, 0);
+    }
+    prevPathRef.current = location.pathname;
   }, [location.pathname]);
 
   return (

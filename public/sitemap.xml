@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Halaman Utama / Beranda & Edukasi Lingkungan -->
+  <!-- Halaman Utama / Beranda -->
   <url>
     <loc>https://bank-sampah-kappa.vercel.app/</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- Tentang Bank Sampah Ngariboyo -->
+  <url>
+    <loc>https://bank-sampah-kappa.vercel.app/tentang</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Edukasi Lingkungan & Sampah -->
+  <url>
+    <loc>https://bank-sampah-kappa.vercel.app/edukasi</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Panduan Memilah Sampah -->
+  <url>
+    <loc>https://bank-sampah-kappa.vercel.app/panduan</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Halaman Cek Status Iuran Sampah Warga -->

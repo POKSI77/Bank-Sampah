@@ -1,7 +1,9 @@
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiOutlineArrowRight, HiOutlineBars3, HiOutlineXMark } from 'react-icons/hi2';
 import { useEffect, useState } from 'react';
 import logoMagetan from '../assets/logo_magetan.png';
+
+const LANDING_PATHS = ['/', '/tentang', '/edukasi', '/panduan'];
 
 export default function PublicNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,12 +18,16 @@ export default function PublicNavbar() {
     event.preventDefault();
     closeMenu();
 
-    if (pathname !== '/') {
-      navigate('/', { state: { targetSection: sectionId } });
+    const targetUrl = sectionId === 'beranda' ? '/' : `/${sectionId}`;
+    const isLanding = LANDING_PATHS.includes(pathname);
+
+    if (!isLanding) {
+      navigate(targetUrl, { state: { targetSection: sectionId } });
       return;
     }
 
     setActiveSection(sectionId);
+    window.history.replaceState(null, '', targetUrl);
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: 'smooth' });
@@ -29,7 +35,8 @@ export default function PublicNavbar() {
   };
 
   useEffect(() => {
-    if (pathname !== '/') {
+    const isLanding = LANDING_PATHS.includes(pathname);
+    if (!isLanding) {
       const resetTimer = setTimeout(() => setActiveSection(''), 0);
       return () => clearTimeout(resetTimer);
     }
@@ -62,6 +69,10 @@ export default function PublicNavbar() {
 
       if (bestSection) {
         setActiveSection(bestSection);
+        const targetUrl = bestSection === 'beranda' ? '/' : `/${bestSection}`;
+        if (window.location.pathname !== targetUrl) {
+          window.history.replaceState(null, '', targetUrl);
+        }
       }
     }, {
       threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -75,8 +86,8 @@ export default function PublicNavbar() {
       
       if (window.scrollY < 50) {
         setActiveSection('beranda');
-        if (window.location.hash) {
-          window.history.replaceState(null, '', window.location.pathname);
+        if (window.location.pathname !== '/') {
+          window.history.replaceState(null, '', '/');
         }
       }
     };
@@ -88,20 +99,28 @@ export default function PublicNavbar() {
     };
   }, [pathname]);
 
+  // Handle direct navigation to /tentang, /edukasi, /panduan or state navigation
   useEffect(() => {
-    const target = location.state?.targetSection || (location.hash ? location.hash.slice(1) : null);
-    if (pathname === '/' && target) {
+    const isLanding = LANDING_PATHS.includes(pathname);
+    if (!isLanding) return;
+
+    const sectionFromPath = pathname.replace('/', '');
+    const target = location.state?.targetSection || (sectionFromPath && sectionFromPath !== '' ? sectionFromPath : null) || (location.hash ? location.hash.slice(1) : null);
+
+    if (target && ['tentang', 'edukasi', 'panduan'].includes(target)) {
+      setActiveSection(target);
       const timer = setTimeout(() => {
         const el = document.getElementById(target);
         if (el) {
           el.scrollIntoView({ behavior: 'smooth' });
-          setActiveSection(target);
         }
         if (window.location.hash) {
-          window.history.replaceState(null, '', window.location.pathname);
+          window.history.replaceState(null, '', `/${target}`);
         }
-      }, 100);
+      }, 150);
       return () => clearTimeout(timer);
+    } else if (pathname === '/') {
+      setActiveSection('beranda');
     }
   }, [pathname, location.hash, location.state]);
 
@@ -126,10 +145,10 @@ export default function PublicNavbar() {
         {menuOpen ? <HiOutlineXMark /> : <HiOutlineBars3 />}
       </button>
       <div className={`public-links ${menuOpen ? 'is-open' : ''}`}>
-        <NavLink to="/" end className={() => (pathname === '/' && activeSection === 'beranda' ? 'active-menu' : '')} onClick={(event) => handleNavClick(event, 'beranda')}>Beranda</NavLink>
-        <Link to="/" className={pathname === '/' && activeSection === 'tentang' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'tentang')}>Tentang</Link>
-        <Link to="/" className={pathname === '/' && activeSection === 'edukasi' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'edukasi')}>Edukasi</Link>
-        <Link to="/" className={pathname === '/' && activeSection === 'panduan' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'panduan')}>Panduan memilah</Link>
+        <Link to="/" className={activeSection === 'beranda' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'beranda')}>Beranda</Link>
+        <Link to="/tentang" className={activeSection === 'tentang' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'tentang')}>Tentang</Link>
+        <Link to="/edukasi" className={activeSection === 'edukasi' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'edukasi')}>Edukasi</Link>
+        <Link to="/panduan" className={activeSection === 'panduan' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'panduan')}>Panduan memilah</Link>
         <Link to="/jemput" className="btn-nav-mobile btn-nav-outline" style={{ marginBottom: '8px' }} onClick={closeMenu}>Jemput Sampah</Link>
         <Link to="/cek-iuran" className="btn-nav-mobile" onClick={closeMenu}>Cek Iuran</Link>
       </div>
