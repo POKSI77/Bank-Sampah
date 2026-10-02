@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { HiOutlineSparkles } from 'react-icons/hi2';
+import logoMagetan from '../assets/logo_magetan.png';
 
 export default function Preloader() {
   const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function Preloader() {
       <div className="preloader-bg-pattern"></div>
       <div className="preloader-content">
         <div className="preloader-icon-wrapper">
-          <HiOutlineSparkles className="preloader-icon"/>
+          <img src={logoMagetan} alt="Logo Resmi Magetan" className="preloader-logo" />
         </div>
         <h1 className="preloader-brand">Desa Ngariboyo</h1>
         
