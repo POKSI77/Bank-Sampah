@@ -24,12 +24,18 @@ export default function Footer() {
           <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Beranda</Link>
           <Link to="/jemput" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Jemput Sampah</Link>
           <Link to="/cek-iuran" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Cek Iuran</Link>
-          <a href="/#panduan" onClick={(e) => {
-            if (window.location.pathname === '/' && window.location.hash === '#panduan') {
-              e.preventDefault();
-              document.getElementById('panduan')?.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}>Panduan Memilah</a>
+          <Link 
+            to="/" 
+            state={{ targetSection: 'panduan' }}
+            onClick={(e) => {
+              if (window.location.pathname === '/') {
+                e.preventDefault();
+                document.getElementById('panduan')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Panduan Memilah
+          </Link>
         </div>
         
         <div className="footer-column footer-contact">

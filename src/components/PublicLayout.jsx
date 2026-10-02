@@ -41,6 +41,9 @@ export default function PublicLayout() {
             if (targetElement) {
               e.preventDefault();
               lenis.scrollTo(targetElement, { offset: -90, duration: 1.2 });
+              if (window.location.hash) {
+                window.history.replaceState(null, '', window.location.pathname);
+              }
             }
           }
         }
@@ -48,6 +51,11 @@ export default function PublicLayout() {
     };
 
     document.addEventListener('click', handleAnchorClick);
+
+    // Bersihkan URL jika ada hash bawaan saat pertama kali dibuka
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
 
     return () => {
       cancelAnimationFrame(rafId);

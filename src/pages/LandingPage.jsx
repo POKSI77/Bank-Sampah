@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import FloatingMascot from '@/components/FloatingMascot';
 import {
   HiOutlineAcademicCap,
@@ -320,7 +321,33 @@ export default function LandingPage() {
 
   return (
     <>
-    <div className="landing-page">
+      <Helmet>
+        <title>Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah</title>
+        <meta
+          name="description"
+          content="Website resmi Bank Sampah Desa Ngariboyo, Magetan. Layanan digital pengelolaan iuran sampah warga, penjemputan sampah terpilah, dan edukasi pemilahan sampah lingkungan."
+        />
+        <meta
+          name="keywords"
+          content="Bank Sampah Ngariboyo, Iuran Sampah Ngariboyo, Jemput Sampah Ngariboyo, Bank Sampah Magetan, Desa Ngariboyo, Pemilahan Sampah, Pengelolaan Sampah Desa"
+        />
+        <meta name="author" content="Pemerintah Desa Ngariboyo" />
+        <meta name="robots" content="index, follow" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://bank-sampah-kappa.vercel.app/" />
+        <meta property="og:title" content="Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah" />
+        <meta property="og:description" content="Layanan digital pengelolaan iuran dan penjemputan sampah Desa Ngariboyo. Bersama wujudkan desa bersih, sehat, dan lestari." />
+        <meta property="og:image" content="/icons/area-sampah.png" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah" />
+        <meta name="twitter:description" content="Layanan digital pengelolaan iuran dan penjemputan sampah Desa Ngariboyo. Bersama wujudkan desa bersih, sehat, dan lestari." />
+      </Helmet>
+
+      <div className="landing-page">
       {/* Removed Parallax background temporarily for performance */}
 
       {/* ── Section Navbar & Hero (Beranda) ── */}

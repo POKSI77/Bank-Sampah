@@ -7,7 +7,8 @@ export default function PublicNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
   const [isScrolled, setIsScrolled] = useState(false);
-  const { pathname, hash } = useLocation();
+  const location = useLocation();
+  const { pathname } = location;
   const navigate = useNavigate();
   const closeMenu = () => setMenuOpen(false);
 
@@ -16,12 +17,15 @@ export default function PublicNavbar() {
     closeMenu();
 
     if (pathname !== '/') {
-      navigate(`/#${sectionId}`);
+      navigate('/', { state: { targetSection: sectionId } });
       return;
     }
 
     setActiveSection(sectionId);
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    const targetElement = document.getElementById(sectionId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
@@ -58,10 +62,6 @@ export default function PublicNavbar() {
 
       if (bestSection) {
         setActiveSection(bestSection);
-        const currentHash = window.location.hash.slice(1);
-        if (currentHash !== bestSection) {
-           window.history.replaceState(null, '', bestSection === 'beranda' ? '/' : `/#${bestSection}`);
-        }
       }
     }, {
       threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
@@ -76,7 +76,7 @@ export default function PublicNavbar() {
       if (window.scrollY < 50) {
         setActiveSection('beranda');
         if (window.location.hash) {
-          window.history.replaceState(null, '', '/');
+          window.history.replaceState(null, '', window.location.pathname);
         }
       }
     };
@@ -89,12 +89,21 @@ export default function PublicNavbar() {
   }, [pathname]);
 
   useEffect(() => {
-    if (pathname === '/' && hash) {
-      requestAnimationFrame(() => {
-        document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-      });
+    const target = location.state?.targetSection || (location.hash ? location.hash.slice(1) : null);
+    if (pathname === '/' && target) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(target);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          setActiveSection(target);
+        }
+        if (window.location.hash) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [hash, pathname]);
+  }, [pathname, location.hash, location.state]);
 
   return (
     <nav className={`public-nav floating-navbar z-[9999] ${isScrolled ? 'nav-scrolled' : ''}`} aria-label="Navigasi publik">
@@ -118,9 +127,9 @@ export default function PublicNavbar() {
       </button>
       <div className={`public-links ${menuOpen ? 'is-open' : ''}`}>
         <NavLink to="/" end className={() => (pathname === '/' && activeSection === 'beranda' ? 'active-menu' : '')} onClick={(event) => handleNavClick(event, 'beranda')}>Beranda</NavLink>
-        <Link to="/#tentang" className={pathname === '/' && activeSection === 'tentang' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'tentang')}>Tentang</Link>
-        <Link to="/#edukasi" className={pathname === '/' && activeSection === 'edukasi' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'edukasi')}>Edukasi</Link>
-        <Link to="/#panduan" className={pathname === '/' && activeSection === 'panduan' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'panduan')}>Panduan memilah</Link>
+        <Link to="/" className={pathname === '/' && activeSection === 'tentang' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'tentang')}>Tentang</Link>
+        <Link to="/" className={pathname === '/' && activeSection === 'edukasi' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'edukasi')}>Edukasi</Link>
+        <Link to="/" className={pathname === '/' && activeSection === 'panduan' ? 'active-menu' : ''} onClick={(event) => handleNavClick(event, 'panduan')}>Panduan memilah</Link>
         <Link to="/jemput" className="btn-nav-mobile btn-nav-outline" style={{ marginBottom: '8px' }} onClick={closeMenu}>Jemput Sampah</Link>
         <Link to="/cek-iuran" className="btn-nav-mobile" onClick={closeMenu}>Cek Iuran</Link>
       </div>

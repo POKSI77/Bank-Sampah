@@ -31,12 +31,32 @@ export default function Layout() {
 
   const closeSidebar = () => setSidebarOpen(false);
 
-  const handleLogout = async () => {
-    if (!window.confirm('Apakah Anda yakin ingin keluar dari dasbor Admin?')) return;
-    
-    await supabase.auth.signOut();
-    toast.success('Berhasil keluar dari sistem.');
-    navigate('/login');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && showLogoutModal && !loggingOut) {
+        setShowLogoutModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showLogoutModal, loggingOut]);
+
+  const confirmLogout = async () => {
+    try {
+      setLoggingOut(true);
+      await supabase.auth.signOut();
+      toast.success('Berhasil keluar dari sistem.');
+      setShowLogoutModal(false);
+      navigate('/login');
+    } catch (err) {
+      console.error('Logout error:', err);
+      toast.error('Gagal keluar, silakan coba lagi.');
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   return (
@@ -101,9 +121,12 @@ export default function Layout() {
 
         <div className="sidebar-footer">
           <button 
-            className="sidebar-link" 
-            style={{ width: '100%', border: 'none', textAlign: 'left', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }} 
-            onClick={handleLogout}
+            type="button"
+            className="sidebar-link sidebar-logout-btn" 
+            onClick={() => {
+              closeSidebar();
+              setShowLogoutModal(true);
+            }}
           >
             <span className="sidebar-link-icon">
               <HiOutlineArrowRightOnRectangle />
@@ -119,6 +142,47 @@ export default function Layout() {
           <Outlet />
         </div>
       </main>
+
+      {/* Custom Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div 
+          className="admin-modal-overlay" 
+          onClick={() => !loggingOut && setShowLogoutModal(false)}
+        >
+          <div 
+            className="admin-modal-card" 
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="admin-modal-icon-badge">
+              <HiOutlineArrowRightOnRectangle />
+            </div>
+            <h3 className="admin-modal-title">Konfirmasi Keluar</h3>
+            <p className="admin-modal-desc">
+              Apakah Anda yakin ingin keluar dari dasbor Admin Desa Ngariboyo?
+            </p>
+            <div className="admin-modal-actions">
+              <button
+                type="button"
+                className="admin-modal-btn admin-modal-btn-cancel"
+                onClick={() => setShowLogoutModal(false)}
+                disabled={loggingOut}
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                className="admin-modal-btn admin-modal-btn-confirm"
+                onClick={confirmLogout}
+                disabled={loggingOut}
+              >
+                {loggingOut ? 'Memproses...' : 'Ya, Keluar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

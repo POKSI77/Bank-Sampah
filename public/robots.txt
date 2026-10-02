@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /cek-iuran
+Allow: /jemput
+
+# Blokir perayapan ke area rahasia dasbor admin dan login
+Disallow: /admin
+Disallow: /admin/
+Disallow: /login
+
+# Peta Situs Resmi
+Sitemap: https://bank-sampah-kappa.vercel.app/sitemap.xml
