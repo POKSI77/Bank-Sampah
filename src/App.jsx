@@ -12,6 +12,7 @@ import CekIuranPage from '@/pages/CekIuranPage';
 import LoginPage from '@/pages/LoginPage';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import JemputSampahPage from '@/pages/JemputSampahPage';
+import NotFoundPage from '@/pages/NotFoundPage';
 
 export default function App() {
   return (
@@ -38,8 +39,8 @@ export default function App() {
             </Route>
           </Route>
 
-          {/* Wildcard fallback agar URL tidak valid tidak menyebabkan layar putih */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Halaman mandiri 404 (tanpa navbar dan footer) */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
         {/* Toast Notifications */}
