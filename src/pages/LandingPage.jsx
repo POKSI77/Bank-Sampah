@@ -336,7 +336,7 @@ export default function LandingPage() {
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://banksampahngariboyo.vercel.app/" />
+        <meta property="og:url" content="https://www.banksampahngariboyo.my.id/" />
         <meta property="og:site_name" content="Bank Sampah Ngariboyo" />
         <meta property="og:title" content="Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah" />
         <meta property="og:description" content="Layanan digital pengelolaan iuran dan penjemputan sampah Desa Ngariboyo. Bersama wujudkan desa bersih, sehat, dan lestari." />
@@ -354,7 +354,7 @@ export default function LandingPage() {
             '@type': 'WebSite',
             name: 'Bank Sampah Ngariboyo',
             alternateName: ['Bank Sampah Desa Ngariboyo', 'Layanan Iuran & Jemput Sampah Ngariboyo'],
-            url: 'https://banksampahngariboyo.vercel.app/',
+            url: 'https://www.banksampahngariboyo.my.id/',
           })}
         </script>
       </Helmet>

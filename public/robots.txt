@@ -10,4 +10,4 @@ Disallow: /admin/
 Disallow: /login
 
 # Peta Situs Resmi
-Sitemap: https://banksampahngariboyo.vercel.app/sitemap.xml
+Sitemap: https://www.banksampahngariboyo.my.id/sitemap.xml
