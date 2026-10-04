@@ -337,6 +337,7 @@ export default function LandingPage() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://bank-sampah-kappa.vercel.app/" />
+        <meta property="og:site_name" content="Bank Sampah Ngariboyo" />
         <meta property="og:title" content="Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah" />
         <meta property="og:description" content="Layanan digital pengelolaan iuran dan penjemputan sampah Desa Ngariboyo. Bersama wujudkan desa bersih, sehat, dan lestari." />
         <meta property="og:image" content="/icons/area-sampah.png" />
@@ -345,6 +346,17 @@ export default function LandingPage() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah" />
         <meta name="twitter:description" content="Layanan digital pengelolaan iuran dan penjemputan sampah Desa Ngariboyo. Bersama wujudkan desa bersih, sehat, dan lestari." />
+
+        {/* Google Site Name Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Bank Sampah Ngariboyo',
+            alternateName: ['Bank Sampah Desa Ngariboyo', 'Layanan Iuran & Jemput Sampah Ngariboyo'],
+            url: 'https://bank-sampah-kappa.vercel.app/',
+          })}
+        </script>
       </Helmet>
 
       <div className="landing-page">
