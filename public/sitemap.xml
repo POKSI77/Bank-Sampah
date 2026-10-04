@@ -2,48 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Halaman Utama / Beranda -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Tentang Bank Sampah Ngariboyo -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/tentang</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/tentang</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Edukasi Lingkungan & Sampah -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/edukasi</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/edukasi</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Panduan Memilah Sampah -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/panduan</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/panduan</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Halaman Cek Status Iuran Sampah Warga -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/cek-iuran</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/cek-iuran</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Halaman Layanan Penjemputan Sampah Terpilah -->
   <url>
-    <loc>https://bank-sampah-kappa.vercel.app/jemput</loc>
-    <lastmod>2026-10-02</lastmod>
+    <loc>https://banksampahngariboyo.vercel.app/jemput</loc>
+    <lastmod>2026-10-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

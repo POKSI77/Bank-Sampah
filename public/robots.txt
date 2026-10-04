@@ -10,4 +10,4 @@ Disallow: /admin/
 Disallow: /login
 
 # Peta Situs Resmi
-Sitemap: https://bank-sampah-kappa.vercel.app/sitemap.xml
+Sitemap: https://banksampahngariboyo.vercel.app/sitemap.xml
