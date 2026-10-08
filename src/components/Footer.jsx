@@ -4,7 +4,7 @@ import logoMagetan from '../assets/logo_magetan.png';
 
 export default function Footer() {
   return (
-    <footer className="public-footer">
+    <footer className="public-footer" data-nosnippet>
       <div className="footer-top">
         <h2 className="footer-huge-title">NGARIBOYO</h2>
         <p className="footer-tagline">Desa Bersih. Warga Sehat. Masa Depan Lestari.</p>

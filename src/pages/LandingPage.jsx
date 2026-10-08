@@ -325,7 +325,7 @@ export default function LandingPage() {
         <title>Bank Sampah Ngariboyo - Layanan Iuran & Jemput Sampah</title>
         <meta
           name="description"
-          content="Website resmi Bank Sampah Desa Ngariboyo, Magetan. Layanan digital pengelolaan iuran sampah warga, penjemputan sampah terpilah, dan edukasi pemilahan sampah lingkungan."
+          content="Bank Sampah Ngariboyo - Sistem digitalisasi pengelolaan iuran dan penjemputan sampah untuk mewujudkan Desa Ngariboyo yang bersih, hijau, dan transparan."
         />
         <meta
           name="keywords"
