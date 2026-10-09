@@ -38,7 +38,7 @@ export default function Footer() {
           </Link>
         </div>
         
-        <div className="footer-column footer-contact">
+        <div className="footer-column footer-contact" data-nosnippet>
           <h3>Hubungi Kami</h3>
           <a 
             href="https://maps.app.goo.gl/fPVc5xx176X49dJH7" 
@@ -53,7 +53,7 @@ export default function Footer() {
         </div>
       </div>
       
-      <div className="footer-bottom">
+      <div className="footer-bottom" data-nosnippet>
         <p>© {new Date().getFullYear()} Bank Sampah Desa Ngariboyo.</p>
         <p className="footer-message">Terima kasih telah peduli pada lingkungan!</p>
       </div>
